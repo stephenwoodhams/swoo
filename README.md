@@ -36,10 +36,15 @@ This infrastructure deploys a comprehensive Azure environment including:
 
 ```
 .
-├── Main.bicep                 # Main infrastructure template
+├── Main.bicep                 # Main infrastructure template (VNet, NSG, Log Analytics)
 ├── Main.parameters.json       # Parameters for main template
-├── template.json              # Storage account ARM template
-├── parameters.json            # Parameters for storage template
+├── storage.bicep              # Storage account template
+├── storage.parameters.json    # Parameters for storage template
+├── template.json              # Legacy ARM template (for reference)
+├── parameters.json            # Legacy parameters (for reference)
+├── deploy.sh                  # Deployment automation script
+├── DEPLOYMENT.md              # Detailed deployment guide
+├── ARCHITECTURE.md            # Architecture documentation
 └── README.md                  # This file
 ```
 
@@ -71,6 +76,14 @@ This infrastructure deploys a comprehensive Azure environment including:
    ```
 
 5. **Deploy the storage account** (optional):
+   ```bash
+   az deployment group create \
+     --resource-group rg-swoo-prod-uks \
+     --template-file storage.bicep \
+     --parameters storage.parameters.json
+   ```
+
+   Or use the legacy ARM template:
    ```bash
    az deployment group create \
      --resource-group rg-swoo-prod-uks \
@@ -149,10 +162,15 @@ The deployment provides the following outputs:
 ## Security Considerations
 
 - Network Security Groups restrict traffic to application subnets
-- Storage accounts should have private endpoints (configure separately)
+- Storage accounts use TLS 1.2 minimum and HTTPS-only traffic
+- Blob public access is disabled by default
+- For enhanced security, configure storage accounts with:
+  - `publicNetworkAccess: 'Disabled'` and private endpoints
+  - `allowSharedKeyAccess: false` (requires Azure AD authentication)
 - Consider implementing Azure Policy for compliance
 - Enable Azure Security Center for threat protection
 - Review NSG rules regularly and apply principle of least privilege
+- Use Azure Bastion for secure RDP access instead of exposing RDP to VNet
 
 ## Monitoring
 

@@ -50,6 +50,16 @@ param tags object = {
 ])
 param minimumTlsVersion string = 'TLS1_2'
 
+@description('Allow public network access to the storage account. Set to Disabled for enhanced security with private endpoints.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = 'Enabled'
+
+@description('Allow shared key access. Set to false for enhanced security (requires Azure AD authentication).')
+param allowSharedKeyAccess bool = true
+
 // Storage Account
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: storageAccountName
@@ -62,11 +72,11 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   properties: {
     dnsEndpointType: 'Standard'
     defaultToOAuthAuthentication: false
-    publicNetworkAccess: 'Enabled'
+    publicNetworkAccess: publicNetworkAccess
     allowCrossTenantReplication: false
     minimumTlsVersion: minimumTlsVersion
     allowBlobPublicAccess: false
-    allowSharedKeyAccess: true
+    allowSharedKeyAccess: allowSharedKeyAccess
     networkAcls: {
       bypass: 'AzureServices'
       virtualNetworkRules: []
