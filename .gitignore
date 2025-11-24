@@ -1,0 +1,28 @@
+# Bicep generated files
+*.json
+!parameters.json
+!*.parameters.json
+!template.json
+
+# Azure deployment files
+*.zip
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Terraform files (if used in future)
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Local environment files
+.env
+.env.local

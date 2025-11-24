@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment": {
+      "value": "prod"
+    },
+    "location": {
+      "value": "uksouth"
+    },
+    "vnetAddressPrefix": {
+      "value": "10.150.0.0/22"
+    },
+    "tags": {
+      "value": {
+        "Environment": "prod",
+        "ManagedBy": "Bicep",
+        "Project": "swoo",
+        "Owner": "Infrastructure Team"
+      }
+    }
+  }
+}
